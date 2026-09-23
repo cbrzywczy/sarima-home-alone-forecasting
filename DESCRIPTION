@@ -1,0 +1,19 @@
+Type: Project
+Package: sarimaHomeAloneForecasting
+Title: Prognozowanie szeregów czasowych: Kevin sam w domu i temperatura w Polsce
+Version: 1.0.0
+Authors@R: person("Celina", "Brzywczy", role = c("aut", "cre"))
+Description: Porównanie modeli SARIMA, Holta-Wintersa, ARIMA i modeli
+    ekstrapolacyjnych na prognozach out-of-sample. Zależności instaluje
+    remotes::install_deps().
+License: MIT + file LICENSE
+Encoding: UTF-8
+Depends: R (>= 4.3)
+Imports:
+    forecast,
+    gtable,
+    jsonlite,
+    lmtest,
+    scales,
+    tseries,
+    urca

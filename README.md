@@ -66,6 +66,15 @@ Intuicja podpowiada, że „Kevin sam w domu” to dla wielu Polaków świątecz
 | ![Prognozy temperatury](charts/temp_prognozy.png) |
 | Prognozy na lata 2024–2025. Żaden model nie przewidział rekordowo ciepłego 2024 roku. |
 
+## Ocena modelu
+
+- **Mała próba testowa.** Prognozy „Kevina” oceniam na 12 miesiącach, a temperatury na 2 latach. Ranking modeli może się zmienić przy innym okresie testowym.
+- **Granica stacjonarności.** Sezonowy parametr SARIMA wynosi 1,000 (sar1, błąd standardowy ≈ 0). To sygnał, że sezonowość jest niemal deterministyczna i model jest na granicy niestacjonarności.
+- **Reszty SARIMA** nie są białym szumem (Ljung-Box p = 0,020) ani normalne (Jarque-Bera p < 0,001). Przedziały prognoz z tego modelu byłyby niewiarygodne.
+- **MAPE przy małych wartościach.** Od lutego do października indeks wynosi 1–4, więc błąd o 1 punkt to kilkadziesiąt procent. Stąd MAPE 35–45%. Dla tego szeregu bardziej miarodajne są MAE i RMSE.
+- **Benchmark.** Na temperaturze metoda naiwna pokonała ARIMA i Holta. Złożony model nie zawsze prognozuje lepiej niż prosta reguła.
+- **Dane Google Trends** to indeks względny (0–100), przeliczany przy każdym pobraniu. Nowe pobranie może dać nieco inne wartości.
+
 ## Pojęcia
 
 **Out-of-sample i in-sample.** Model szacuję tylko na części danych (próba ucząca), a prognozy porównuję z latami, których model nie widział (próba testowa). To jest test out-of-sample. Dopasowanie in-sample mierzy, jak model odtwarza dane, na których był szacowany. Dobre dopasowanie in-sample nie gwarantuje dobrych prognoz.
@@ -106,6 +115,7 @@ Cała analiza jest w jednym skrypcie [`projekt_asc.R`](projekt_asc.R).
 
 ```r
 # w katalogu repozytorium
+remotes::install_deps()   # pakiety z pliku DESCRIPTION
 source("projekt_asc.R")
 ```
 
