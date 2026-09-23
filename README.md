@@ -2,25 +2,27 @@
 
 <img src="https://media1.tenor.com/m/6RRvzdMyDoAAAAAC/home-alone-kevin-mccallister.gif" alt="Kevin McCallister krzyczy" align="right" width="360">
 
-Co roku w grudniu Polacy szukają w Google „Kevin sam w domu”. Projekt sprawdza, który model najlepiej prognozuje ten szczyt. Drugi szereg, średnioroczna temperatura w Polsce od 1901 roku, służy do porównania modeli na danych bez sezonowości.
+> ### Który model najlepiej przewiduje grudniowy szczyt wyszukiwań „Kevin sam w domu”?
 
-**Dane:** Google Trends 2004–2025 (264 miesiące) · temperatura 1901–2025 (125 lat)
+Projekt z Analizy Szeregów Czasowych (WNE UW, 2026) porównuje modele na dwóch szeregach. Pierwszy to popularność frazy „Kevin sam w domu” w Google, z wyraźną sezonowością. Drugi to średnioroczna temperatura w Polsce, bez sezonowości.
 
-**Modele:** SARIMA · Holt-Winters · ARIMA · Holt · SES · metoda naiwna · błądzenie losowe z dryfem
+**Dane:** Google Trends z lat 2004–2025 (264 miesiące) i temperatura z lat 1901–2025 (125 lat)
 
-**Testy:** ADF + Breusch-Godfrey · Ljung-Box · Jarque-Bera · LR · ANOVA i Kruskal-Wallis dla sezonowości
+**Modele:** SARIMA, Holt-Winters, ARIMA, Holt, SES, metoda naiwna, błądzenie losowe z dryfem
 
-**Ocena:** prognozy out-of-sample, MAE / RMSE / MAPE ex post
+**Testy:** ADF z testem Breuscha-Godfreya, Ljunga-Boxa, Jarque-Bera, LR, ANOVA i Kruskala-Wallisa dla sezonowości
 
-<img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/r/r-original.svg" width="16" alt="R"> &nbsp;`forecast` · `tseries` · `urca` · `lmtest`
+**Ocena:** prognozy out-of-sample, MAE, RMSE i MAPE ex post
 
-<sub>Projekt z Analizy Szeregów Czasowych, WNE UW, 2026</sub>
+<img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/r/r-original.svg" width="16" alt="R">&nbsp; `forecast` `tseries` `urca` `lmtest`
 
 <br clear="right">
 
 ## „Kevin sam w domu”
 
 ![Popularność frazy „Kevin sam w domu”](charts/kevin_szereg.png)
+
+Czarna linia to indeks Google Trends, czerwona to ten sam szereg po usunięciu sezonowości.
 
 - Szczyt przypada zawsze na grudzień. Trend rośnie do ok. 2022 roku.
 - Próba ucząca: 2004–2024. Próba testowa: 2025.
@@ -29,11 +31,14 @@ Co roku w grudniu Polacy szukają w Google „Kevin sam w domu”. Projekt spraw
 - Wariant multiplikatywny Holta-Wintersa odpada, bo szereg zawiera zera.
 - Grudzień 2025: wartość rzeczywista 91, Holt-Winters 80,7, SARIMA 77,0.
 
-| Dekompozycja addytywna | Sezonowość wyszukiwań |
+| Dekompozycja | Sezonowość |
 |---|---|
 | ![Dekompozycja](charts/kevin_dekompozycja.png) | ![Sezonowość](charts/kevin_sezonowosc.png) |
+| Szereg rozłożony na trend, powtarzalny wzór sezonowy i resztę. | Wartości z kolejnych lat pogrupowane według miesięcy. Pozioma kreska to średnia miesiąca. Grudzień wyraźnie dominuje. |
 
 ![Prognozy out-of-sample](charts/kevin_prognozy.png)
+
+Prognozy na 2025 rok na tle danych rzeczywistych. Oba modele trafiają w grudniowy szczyt, ale go zaniżają.
 
 ## Temperatura w Polsce
 
@@ -44,19 +49,20 @@ Co roku w grudniu Polacy szukają w Google „Kevin sam w domu”. Projekt spraw
 - Najmniejszy błąd ex post ma **metoda naiwna** (RMSE 0,655). Najlepsze dopasowanie in-sample ma Holt.
 - Prognoza ARIMA na lata 2026–2028: 9,6 °C, 9,3 °C, 9,6 °C.
 
-| Trend średniorocznej temperatury | Prognozy out-of-sample |
+| Trend | Prognozy |
 |---|---|
 | ![Trend temperatury](charts/temp_trend.png) | ![Prognozy temperatury](charts/temp_prognozy.png) |
+| Temperatura roczna, średnia ruchoma i trend liniowy. Według trendu liniowego temperatura wzrosła od 1901 roku o 1,8 °C. | Prognozy na lata 2024–2025. Żaden model nie przewidział rekordowo ciepłego 2024 roku. |
 
 ## Kod
 
 Cała analiza jest w jednym skrypcie [`projekt_asc.R`](projekt_asc.R).
 
-| Fragment | Zawartość |
-|---|---|
-| <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/r/r-original.svg" width="14"> [Temperatura](projekt_asc.R#L42-L701) | trend, dekompozycja, Holt i modele ekstrapolacyjne, dobór ARIMA, test LR, ADF, diagnostyka reszt, prognozy |
-| <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/r/r-original.svg" width="14"> [„Kevin sam w domu”](projekt_asc.R#L703-L1311) | dekompozycja, Holt-Winters, dobór SARIMA, ADF po różnicowaniu, testy sezonowości, diagnostyka reszt, prognozy |
-| <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/r/r-original.svg" width="14"> [Tabele i podsumowanie](projekt_asc.R#L1312-L1536) | tabele do raportu, podsumowanie liczbowe |
+| | Fragment | Zawartość |
+|:-:|---|---|
+| <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/r/r-original.svg" width="18"> | [Temperatura](projekt_asc.R#L42-L701) | trend, dekompozycja, Holt i modele ekstrapolacyjne, dobór ARIMA, test LR, ADF, diagnostyka reszt, prognozy |
+| <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/r/r-original.svg" width="18"> | [Kevin&nbsp;sam&nbsp;w&nbsp;domu](projekt_asc.R#L703-L1311) | dekompozycja, Holt-Winters, dobór SARIMA, ADF po różnicowaniu, testy sezonowości, diagnostyka reszt, prognozy |
+| <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/r/r-original.svg" width="18"> | [Tabele](projekt_asc.R#L1312-L1536) | tabele do raportu, podsumowanie liczbowe |
 
 ```r
 # w katalogu repozytorium
