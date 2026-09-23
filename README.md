@@ -4,7 +4,7 @@
 
 > ### Który model najlepiej przewiduje grudniowy szczyt wyszukiwań „Kevin sam w domu”?
 
-Projekt z Analizy Szeregów Czasowych (WNE UW, 2026) porównuje modele na dwóch szeregach. Pierwszy to popularność frazy „Kevin sam w domu” w Google, z wyraźną sezonowością. Drugi to średnioroczna temperatura w Polsce, bez sezonowości.
+Intuicja podpowiada, że „Kevin sam w domu” to dla wielu Polaków świąteczny rytuał wspólnego oglądania. Sprawdzam, czy wyszukiwania tej frazy w Google są rzeczywiście sezonowe i który model najlepiej prognozuje ich grudniowy szczyt. Drugi szereg, średnioroczna temperatura w Polsce, służy do porównania modeli na danych bez sezonowości. Projekt z Analizy Szeregów Czasowych, WNE UW, 2026.
 
 **Dane:** Google Trends z lat 2004–2025 (264 miesiące) i temperatura z lat 1901–2025 (125 lat)
 
@@ -20,11 +20,13 @@ Projekt z Analizy Szeregów Czasowych (WNE UW, 2026) porównuje modele na dwóch
 
 ## „Kevin sam w domu”
 
+<a href="https://trends.google.com/trends/explore?date=all&geo=PL&q=Kevin%20sam%20w%20domu"><img src="charts/google_trends.png" alt="Google Trends: Kevin sam w domu, Polska, 2004 – obecnie"></a>
+
+Tak wyglądają dane w Google Trends: co roku jeden ostry szczyt. Kliknij obrazek, żeby otworzyć aktualny wykres.
+
 ![Popularność frazy „Kevin sam w domu”](charts/kevin_szereg.png)
 
-Czarna linia to indeks Google Trends, czerwona to ten sam szereg po usunięciu sezonowości.
-
-<a href="https://trends.google.com/trends/explore?date=all&geo=PL&q=Kevin%20sam%20w%20domu"><img src="https://img.shields.io/badge/Google%20Trends-na%20%C5%BCywo-4285F4?logo=google&logoColor=white" alt="Zobacz w Google Trends"></a>
+Ten sam szereg w R. Czarna linia to indeks Google Trends, czerwona to szereg po usunięciu sezonowości.
 
 - Szczyt przypada zawsze na grudzień. Trend rośnie do ok. 2022 roku.
 - Próba ucząca: 2004–2024. Próba testowa: 2025.
@@ -81,4 +83,4 @@ Skrypt instaluje brakujące pakiety do `Rlib/`. Wyniki zapisuje w `latex/`.
 
 ## Licencja
 
-Kod: [MIT](LICENSE). Wykresy: CC BY 4.0.
+Kod: [MIT](LICENSE). Wykresy własne: CC BY 4.0. Zrzut ekranu: Google Trends.
