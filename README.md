@@ -24,6 +24,8 @@ Projekt z Analizy Szeregów Czasowych (WNE UW, 2026) porównuje modele na dwóch
 
 Czarna linia to indeks Google Trends, czerwona to ten sam szereg po usunięciu sezonowości.
 
+<a href="https://trends.google.com/trends/explore?date=all&geo=PL&q=Kevin%20sam%20w%20domu"><img src="https://img.shields.io/badge/Google%20Trends-na%20%C5%BCywo-4285F4?logo=google&logoColor=white" alt="Zobacz w Google Trends"></a>
+
 - Szczyt przypada zawsze na grudzień. Trend rośnie do ok. 2022 roku.
 - Próba ucząca: 2004–2024. Próba testowa: 2025.
 - Wybrany model: **SARIMA(0,0,1)(1,0,0)[12]**. Test Ljunga-Boxa (p = 0,020) wskazuje resztkową autokorelację.
