@@ -2,7 +2,7 @@
 
 <img src="https://media1.tenor.com/m/6RRvzdMyDoAAAAAC/home-alone-kevin-mccallister.gif" alt="Kevin McCallister krzyczy" align="right" width="360">
 
-> ### Który model najlepiej przewiduje grudniowy szczyt wyszukiwań „Kevin sam w domu”?
+Który model najlepiej przewiduje grudniowy szczyt wyszukiwań „Kevin sam w domu”?
 
 Intuicja podpowiada, że „Kevin sam w domu” to dla wielu Polaków świąteczny rytuał wspólnego oglądania. Sprawdzam, czy wyszukiwania tej frazy w Google są rzeczywiście sezonowe i który model najlepiej prognozuje ich grudniowy szczyt. Drugi szereg, średnioroczna temperatura w Polsce, służy do porównania modeli na danych bez sezonowości. Projekt z Analizy Szeregów Czasowych, WNE UW, 2026.
 
@@ -20,29 +20,32 @@ Intuicja podpowiada, że „Kevin sam w domu” to dla wielu Polaków świątecz
 
 ## „Kevin sam w domu”
 
-<a href="https://trends.google.com/trends/explore?date=all&geo=PL&q=Kevin%20sam%20w%20domu"><img src="charts/google_trends.png" alt="Google Trends: Kevin sam w domu, Polska, 2004 – obecnie"></a>
+| Dane w Google Trends |
+|:-:|
+| <a href="https://trends.google.com/trends/explore?date=all&geo=PL&q=Kevin%20sam%20w%20domu"><img src="charts/google_trends.png" alt="Google Trends: Kevin sam w domu, Polska, 2004 – obecnie"></a> |
+| Co roku jeden ostry szczyt w grudniu. Kliknij obrazek, żeby otworzyć aktualny wykres. |
 
-Tak wyglądają dane w Google Trends: co roku jeden ostry szczyt. Kliknij obrazek, żeby otworzyć aktualny wykres.
+| Ten sam szereg w R |
+|:-:|
+| ![Popularność frazy „Kevin sam w domu”](charts/kevin_szereg.png) |
+| Czarna linia to indeks Google Trends, czerwona to szereg po usunięciu sezonowości. |
 
-![Popularność frazy „Kevin sam w domu”](charts/kevin_szereg.png)
-
-Ten sam szereg w R. Czarna linia to indeks Google Trends, czerwona to szereg po usunięciu sezonowości.
-
-- Szczyt przypada zawsze na grudzień. Trend rośnie do ok. 2022 roku.
+- Szereg jest wyraźnie sezonowy: szczyt przypada zawsze na grudzień. Trend rośnie do ok. 2022 roku.
 - Próba ucząca: 2004–2024. Próba testowa: 2025.
 - Wybrany model: **SARIMA(0,0,1)(1,0,0)[12]**. Test Ljunga-Boxa (p = 0,020) wskazuje resztkową autokorelację.
 - **Holt-Winters addytywny** ma mniejsze błędy absolutne: MAE 1,95 i RMSE 3,33. SARIMA ma mniejszy błąd procentowy: MAPE 35,2% wobec 44,7%.
 - Wariant multiplikatywny Holta-Wintersa odpada, bo szereg zawiera zera.
 - Grudzień 2025: wartość rzeczywista 91, Holt-Winters 80,7, SARIMA 77,0.
 
-| Dekompozycja | Sezonowość |
-|---|---|
-| ![Dekompozycja](charts/kevin_dekompozycja.png) | ![Sezonowość](charts/kevin_sezonowosc.png) |
-| Szereg rozłożony na trend, powtarzalny wzór sezonowy i resztę. | Wartości z kolejnych lat pogrupowane według miesięcy. Pozioma kreska to średnia miesiąca. Grudzień wyraźnie dominuje. |
+| Dekompozycja |
+|:-:|
+| ![Dekompozycja](charts/kevin_dekompozycja.png) |
+| Szereg rozłożony na trend, powtarzalny wzór sezonowy i resztę. |
 
-![Prognozy out-of-sample](charts/kevin_prognozy.png)
-
-Prognozy na 2025 rok na tle danych rzeczywistych. Oba modele trafiają w grudniowy szczyt, ale go zaniżają.
+| Sezonowość | Prognozy out-of-sample |
+|:-:|:-:|
+| ![Sezonowość](charts/kevin_sezonowosc.png) | ![Prognozy out-of-sample](charts/kevin_prognozy.png) |
+| Wartości z kolejnych lat pogrupowane według miesięcy. Pozioma kreska to średnia miesiąca. Grudzień wyraźnie dominuje. | Prognozy na 2025 rok na tle danych rzeczywistych. Oba modele trafiają w grudniowy szczyt, ale go zaniżają. |
 
 ## Temperatura w Polsce
 
@@ -53,10 +56,43 @@ Prognozy na 2025 rok na tle danych rzeczywistych. Oba modele trafiają w grudnio
 - Najmniejszy błąd ex post ma **metoda naiwna** (RMSE 0,655). Najlepsze dopasowanie in-sample ma Holt.
 - Prognoza ARIMA na lata 2026–2028: 9,6 °C, 9,3 °C, 9,6 °C.
 
-| Trend | Prognozy |
-|---|---|
-| ![Trend temperatury](charts/temp_trend.png) | ![Prognozy temperatury](charts/temp_prognozy.png) |
-| Temperatura roczna, średnia ruchoma i trend liniowy. Według trendu liniowego temperatura wzrosła od 1901 roku o 1,8 °C. | Prognozy na lata 2024–2025. Żaden model nie przewidział rekordowo ciepłego 2024 roku. |
+| Trend |
+|:-:|
+| ![Trend temperatury](charts/temp_trend.png) |
+| Temperatura roczna, średnia ruchoma i trend liniowy. Według trendu liniowego temperatura wzrosła od 1901 roku o 1,8 °C. |
+
+| Prognozy out-of-sample |
+|:-:|
+| ![Prognozy temperatury](charts/temp_prognozy.png) |
+| Prognozy na lata 2024–2025. Żaden model nie przewidział rekordowo ciepłego 2024 roku. |
+
+## Pojęcia
+
+**Out-of-sample i in-sample.** Model szacuję tylko na części danych (próba ucząca), a prognozy porównuję z latami, których model nie widział (próba testowa). To jest test out-of-sample. Dopasowanie in-sample mierzy, jak model odtwarza dane, na których był szacowany. Dobre dopasowanie in-sample nie gwarantuje dobrych prognoz.
+
+**Błędy ex post** liczy się po fakcie, porównując prognozę z rzeczywistą wartością:
+- **MAE:** średni błąd bezwzględny, w jednostkach szeregu,
+- **RMSE:** pierwiastek ze średniego kwadratu błędu, mocniej karze duże pomyłki,
+- **MAPE:** średni błąd procentowy, pozwala porównywać szeregi o różnej skali.
+
+**Sezonowość** to wzór powtarzający się co roku o tej samej porze. **Dekompozycja addytywna** rozkłada szereg na sumę trendu, składnika sezonowego i reszty.
+
+**Stacjonarność** oznacza stałą średnią i wariancję w czasie. Część ARMA modelu wymaga szeregu stacjonarnego, a różnicowanie (d w ARIMA) do niego prowadzi. **Test ADF** sprawdza hipotezę o pierwiastku jednostkowym, czyli niestacjonarności. **Test Breuscha-Godfreya** sprawdza, czy reszty regresji testowej ADF nie są autokorelowane. Gdyby były, wynik ADF byłby niewiarygodny.
+
+**ACF i PACF** pokazują korelację szeregu z jego wartościami sprzed 1, 2, … okresów. Na ich podstawie dobiera się rzędy modelu ARIMA.
+
+**ARIMA(p, d, q):** p to liczba opóźnień szeregu, d to liczba różnicowań, q to liczba opóźnień błędu. **SARIMA(p, d, q)(P, D, Q)[12]** dodaje część sezonową dla okresu 12 miesięcy.
+
+**Wygładzanie wykładnicze** prognozuje na podstawie średniej ważonej z wagami malejącymi dla starszych obserwacji:
+- **SES:** sam poziom szeregu,
+- **Holt:** poziom i trend,
+- **Holt-Winters:** poziom, trend i sezonowość. Wariant addytywny zakłada stałą amplitudę sezonowości, multiplikatywny amplitudę proporcjonalną do poziomu szeregu.
+
+**Modele odniesienia:** metoda naiwna przyjmuje jako prognozę ostatnią obserwację. Błądzenie losowe z dryfem dodaje do niej średnią zmianę z przeszłości. Jeśli złożony model nie wygrywa z nimi, nie wnosi wartości.
+
+**Diagnostyka reszt:** test Ljunga-Boxa sprawdza, czy w resztach nie została autokorelacja, której model nie wychwycił. Test Jarque-Bera sprawdza normalność reszt. Test LR porównuje model prostszy z rozbudowanym.
+
+**ANOVA i test Kruskala-Wallisa** sprawdzają, czy wartości szeregu różnią się istotnie między miesiącami.
 
 ## Kod
 
