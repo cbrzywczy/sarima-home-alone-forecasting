@@ -1,21 +1,24 @@
 # Prognozowanie szeregów czasowych: „Kevin sam w domu” i temperatura w Polsce
 
-<img src="img/home-alone-house.jpg" alt="Dom z filmu „Kevin sam w domu”, Winnetka, Illinois" width="100%">
+<img src="https://media1.tenor.com/m/6RRvzdMyDoAAAAAC/home-alone-kevin-mccallister.gif" alt="Kevin McCallister krzyczy" align="right" width="360">
 
-<sub>Dom z filmu, Winnetka, Illinois. Fot. Kidfly182, <a href="https://commons.wikimedia.org/wiki/File:Home_Alone_House_2026.jpg">Wikimedia Commons</a>, CC BY 4.0.</sub>
+Co roku w grudniu Polacy szukają w Google „Kevin sam w domu”. Projekt sprawdza, który model najlepiej prognozuje ten szczyt. Drugi szereg, średnioroczna temperatura w Polsce od 1901 roku, służy do porównania modeli na danych bez sezonowości.
 
-Co roku w grudniu Polacy szukają „Kevin sam w domu”. Projekt sprawdza, który model najlepiej prognozuje ten szczyt. Drugi szereg, średnioroczna temperatura w Polsce, służy do porównania modeli na danych bez sezonowości.
+**Dane:** Google Trends 2004–2025 (264 miesiące) · temperatura 1901–2025 (125 lat)
 
-| | |
-|---|---|
-| **Szeregi** | Google Trends „Kevin sam w domu”, miesięcznie 2004–2025 (264 obs.) · średnioroczna temperatura w Polsce 1901–2025 (125 obs.) |
-| **Modele** | SARIMA, Holt-Winters · ARIMA, Holt, SES, metoda naiwna, błądzenie losowe z dryfem |
-| **Testy** | ADF z testem Breuscha-Godfreya · Ljung-Box · Jarque-Bera · LR · ANOVA i Kruskal-Wallis dla sezonowości |
-| **Ocena** | prognozy out-of-sample, MAE / RMSE / MAPE ex post |
-| **Narzędzia** | R: `forecast`, `tseries`, `urca`, `lmtest` |
-| **Kontekst** | projekt z Analizy Szeregów Czasowych, WNE UW, 2026 |
+**Modele:** SARIMA · Holt-Winters · ARIMA · Holt · SES · metoda naiwna · błądzenie losowe z dryfem
 
-## Wyniki: „Kevin sam w domu”
+**Testy:** ADF + Breusch-Godfrey · Ljung-Box · Jarque-Bera · LR · ANOVA i Kruskal-Wallis dla sezonowości
+
+**Ocena:** prognozy out-of-sample, MAE / RMSE / MAPE ex post
+
+<img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/r/r-original.svg" width="16" alt="R"> &nbsp;`forecast` · `tseries` · `urca` · `lmtest`
+
+<sub>Projekt z Analizy Szeregów Czasowych, WNE UW, 2026</sub>
+
+<br clear="right">
+
+## „Kevin sam w domu”
 
 ![Popularność frazy „Kevin sam w domu”](charts/kevin_szereg.png)
 
@@ -26,14 +29,13 @@ Co roku w grudniu Polacy szukają „Kevin sam w domu”. Projekt sprawdza, któ
 - Wariant multiplikatywny Holta-Wintersa odpada, bo szereg zawiera zera.
 - Grudzień 2025: wartość rzeczywista 91, Holt-Winters 80,7, SARIMA 77,0.
 
-| | |
+| Dekompozycja addytywna | Sezonowość wyszukiwań |
 |---|---|
 | ![Dekompozycja](charts/kevin_dekompozycja.png) | ![Sezonowość](charts/kevin_sezonowosc.png) |
-| Dekompozycja addytywna | Sezonowość wyszukiwań |
 
 ![Prognozy out-of-sample](charts/kevin_prognozy.png)
 
-## Wyniki: temperatura
+## Temperatura w Polsce
 
 - Szereg ma wyraźny trend rosnący.
 - Próba ucząca: 1901–2023. Próba testowa: 2024–2025.
@@ -42,28 +44,33 @@ Co roku w grudniu Polacy szukają „Kevin sam w domu”. Projekt sprawdza, któ
 - Najmniejszy błąd ex post ma **metoda naiwna** (RMSE 0,655). Najlepsze dopasowanie in-sample ma Holt.
 - Prognoza ARIMA na lata 2026–2028: 9,6 °C, 9,3 °C, 9,6 °C.
 
-| | |
+| Trend średniorocznej temperatury | Prognozy out-of-sample |
 |---|---|
 | ![Trend temperatury](charts/temp_trend.png) | ![Prognozy temperatury](charts/temp_prognozy.png) |
-| Trend średniorocznej temperatury | Prognozy out-of-sample |
 
-## Dane
+## Kod
 
-| Plik | Źródło |
+Cała analiza jest w jednym skrypcie [`projekt_asc.R`](projekt_asc.R).
+
+| Fragment | Zawartość |
 |---|---|
-| [`sezonowy/kevin2004teraz.csv`](sezonowy/kevin2004teraz.csv) | [Google Trends](https://trends.google.com/trends/explore?date=all&geo=PL&q=Kevin%20sam%20w%20domu), fraza „Kevin sam w domu”, Polska |
-| [`niesezonowy/dane/worldbank.json`](niesezonowy/dane/worldbank.json) | [World Bank Climate Change Knowledge Portal](https://climateknowledgeportal.worldbank.org/country/poland), seria CRU cru-x0.5, 1901–2024 |
-| [`niesezonowy/dane/sredniorocznaT.csv`](niesezonowy/dane/sredniorocznaT.csv) | [IMGW-PIB, dane publiczne](https://danepubliczne.imgw.pl/), rok 2025 |
-
-## Uruchomienie
+| <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/r/r-original.svg" width="14"> [Temperatura](projekt_asc.R#L42-L701) | trend, dekompozycja, Holt i modele ekstrapolacyjne, dobór ARIMA, test LR, ADF, diagnostyka reszt, prognozy |
+| <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/r/r-original.svg" width="14"> [„Kevin sam w domu”](projekt_asc.R#L703-L1311) | dekompozycja, Holt-Winters, dobór SARIMA, ADF po różnicowaniu, testy sezonowości, diagnostyka reszt, prognozy |
+| <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/r/r-original.svg" width="14"> [Tabele i podsumowanie](projekt_asc.R#L1312-L1536) | tabele do raportu, podsumowanie liczbowe |
 
 ```r
 # w katalogu repozytorium
 source("projekt_asc.R")
 ```
 
-Skrypt instaluje brakujące pakiety do `Rlib/`. Wykresy, tabele i podsumowanie zapisuje w `latex/`.
+Skrypt instaluje brakujące pakiety do `Rlib/`. Wyniki zapisuje w `latex/`.
+
+## Dane
+
+- [Google Trends](https://trends.google.com/trends/explore?date=all&geo=PL&q=Kevin%20sam%20w%20domu): fraza „Kevin sam w domu”, Polska → [`sezonowy/kevin2004teraz.csv`](sezonowy/kevin2004teraz.csv)
+- [World Bank Climate Change Knowledge Portal](https://climateknowledgeportal.worldbank.org/country/poland): seria CRU, 1901–2024 → [`niesezonowy/dane/worldbank.json`](niesezonowy/dane/worldbank.json)
+- [IMGW-PIB, dane publiczne](https://danepubliczne.imgw.pl/): rok 2025 → [`niesezonowy/dane/sredniorocznaT.csv`](niesezonowy/dane/sredniorocznaT.csv)
 
 ## Licencja
 
-Kod: [MIT](LICENSE). Wykresy: CC BY 4.0. Zdjęcie: CC BY 4.0, autor Kidfly182.
+Kod: [MIT](LICENSE). Wykresy: CC BY 4.0.
